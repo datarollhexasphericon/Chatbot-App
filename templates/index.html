@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% from "bootstrap5/form.html" import render_form %}
+{% block title %}Your chatbot{% endblock %}
+
+{% block content %}
+<!-- Main content-->
+<section id="title">
+    <div class="container" style="max-width: 90%;">
+        <div class="row align-items-center g-lg-5 py-5">
+            <div class="col-lg-5 text-center text-lg-start">
+                <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Ask me anything about books!</h1>
+                <p class="col-lg-10 fs-4">General questions, reviews or recommendations. You name it!</p>
+            </div>
+        <div class="col-md-12 mx-auto col-lg-7">
+            <!-- Reply viewbox-->
+            <section class="container my-5 p-4 bg-white shadow rounded" style="height: 300px; overflow-y: auto;">
+                <div class="d-flex flex-column">
+                    <!-- Dynamic messages from user-bot interactions -->
+                    {% for conversation in conversations %}
+                        {% if conversation.messagetype == 'user' %}
+                        <div class="align-self-start mb-3 p-3 rounded bg-info text-white" style="max-width: 75%;">
+                            <p class="m-0"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                </svg> : {{conversation.message|safe}}</p>
+                        </div>
+                        {% elif conversation.messagetype == 'assistant' %}
+                        <div class="align-self-end mb-3 p-3 rounded bg-light text-dark" style="max-width: 75%;">
+                            <p class="m-0"><img src="../static/assets/img/icons8-chatgpt-50.png" width="22" height="22" alt="ChatGPT Logo"
+                                >: {{conversation.message|safe}}</p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </section>
+            <!-- From to collect user questions-->
+            <div class="my-5">
+                {{ render_form(form, novalidate=True, button_map={"submit": "dark"}) }}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
